@@ -1,5 +1,3 @@
-# task1_identify_departments_high_satisfaction.py
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, count, when, round as spark_round
 
@@ -45,7 +43,25 @@ def identify_departments_high_satisfaction(df):
     # 3. Identify departments where this percentage exceeds 50%.
     # 4. Return the result DataFrame.
 
-    pass  # Remove this line after implementing the function
+    #pass  # Remove this line after implementing the function
+    # Filter employees with SatisfactionRating > 4 and EngagementLevel == 'High'
+    high_satisfaction_df = df.filter((col("SatisfactionRating") > 4) & (col("EngagementLevel") == "High"))
+
+    # Count total employees per department
+    total_employees_df = df.groupBy("Department").agg(count("*").alias("TotalEmployees"))
+
+    # Count employees who meet the criteria per department
+    high_satisfaction_count_df = high_satisfaction_df.groupBy("Department").agg(count("*").alias("SatisfiedEngaged"))
+
+    # Calculate the percentage
+    result_df = high_satisfaction_count_df.join(total_employees_df, "Department").withColumn(
+        "Percentage", spark_round((col("SatisfiedEngaged") / col("TotalEmployees")) * 100, 2)
+    ).filter(col("Percentage") > 5)
+    
+    filtered_df = result_df.select("Department", "Percentage")
+
+    # Select only required columns
+    return filtered_df  
 
 def write_output(result_df, output_path):
     """
@@ -58,7 +74,10 @@ def write_output(result_df, output_path):
     Returns:
         None
     """
+
     result_df.coalesce(1).write.csv(output_path, header=True, mode='overwrite')
+    output_dir = os.path.dirname(output_path)
+    os.makedirs(output_dir, exist_ok=True)
 
 def main():
     """
@@ -68,8 +87,9 @@ def main():
     spark = initialize_spark()
     
     # Define file paths
-    input_file = "/workspaces/Employee_Engagement_Analysis_Spark/input/employee_data.csv"
-    output_file = "/workspaces/Employee_Engagement_Analysis_Spark/outputs/task1/departments_high_satisfaction.csv"
+    #input_file = "/workspaces/Employee_Engagement_Analysis_Spark/input/employee_data.csv"
+    input_file = "input/employee_data.csv"
+    output_file = "outputs/task1"
     
     # Load data
     df = load_data(spark, input_file)

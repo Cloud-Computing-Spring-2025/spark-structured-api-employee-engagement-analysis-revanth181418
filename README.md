@@ -191,8 +191,9 @@ A list of departments meeting the specified criteria, along with the correspondi
 
 | Department | Percentage |
 |------------|------------|
-| Finance    | 60%        |
-| Marketing  | 55%        |
+| Sales      | 5.88       |
+| Marketing  | 9.09       |
+| IT         | 15.0       |
 
 ---
 
@@ -215,8 +216,8 @@ Insights into the number and proportion of employees who feel valued but aren’
 **Example Output:**
 
 ```
-Number of Employees Feeling Valued without Suggestions: 25
-Proportion: 25%
+Number of Employees Feeling Valued without Suggestions: 18
+Proportion: 18.0%
 ```
 
 ---
@@ -239,13 +240,13 @@ A comparative analysis showing average Engagement Levels across Job Titles, high
 
 **Example Output:**
 
-| JobTitle    | AvgEngagementLevel |
-|-------------|--------------------|
-| Manager     | 4.5                |
-| Executive   | 4.2                |
-| Developer   | 3.8                |
-| Analyst     | 3.5                |
-| Coordinator | 3.0                |
-| Support     | 2.8                |
+| JobTitle    | AvgEngagementLevel  |
+|-------------|---------------------|
+| Coordinator | 1.82                |
+| Developer   | 2.14                |
+| Executive   | 1.97                |
+| Analyst     | 1.95                |
+| Support     | 1.6                 |
+| Manager     | 1.88                |
 
 ---
